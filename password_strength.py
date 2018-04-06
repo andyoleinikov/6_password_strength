@@ -48,7 +48,7 @@ def get_password_strength(password, filepath_to_blacklist='passwords.txt'):
     password_blacklist = load_blacklist(filepath_to_blacklist)
     if password in password_blacklist:
         return 1
-    if len(password) == 0:
+    if not password:
         return None
     if len(set([letter for letter in password])) > 1:
         password_strength += 1
