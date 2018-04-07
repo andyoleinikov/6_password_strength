@@ -1,18 +1,21 @@
 # Password Strength Calculator
 
-With this script you can verify password strength on a scale from 1 to 10 depending on length, used character types and if it is blacklisted. Password blacklist is top 25 worst passwords from [2017 Splash rating](https://13639-presscdn-0-80-pagely.netdna-ssl.com/wp-content/uploads/2017/12/Top-100-Worst-Passwords-of-2017a.pdf).
+With this script you can verify password strength on a scale from 1 to 10 depending on length, used character types and if it is blacklisted. Password blacklist could be found for example [here](https://github.com/danielmiessler/SecLists/tree/master/Passwords) and passed as an argument.
 
 # Quickstart
 
 Start the script in the command line and type password to check password strength.
 Or import get_password_strength function from password_strength.py file to use in your project.
-Default file path to password blacklist is 'passwords.txt', or it can be stated in the function call.
+Specify the path to a file when using this script from the command line.
+```bash
+$ python password_strength.py <path to file>
+```
 
 ### Example of import using interactive Python interpreter 
 
 ```python
 >>> from password_strength import get_password_strength
->>> get_password_strength('qwerty', 'blacklist_example.txt')
+>>> get_password_strength('qwerty', ['qwerty', '1234'])
 1
 >>> get_password_strength('asdfghqwerty')
 5
@@ -20,13 +23,18 @@ Default file path to password blacklist is 'passwords.txt', or it can be stated 
 10
 ```
 
-### Example of script launch on Linux, Python 3.5:
+### Examples of script launch on Linux, Python 3.5:
 
 ```bash
 
 $ python password_strength.py
-Input password: hello@world
+Input password:
 Password strength is: 6
+
+$ python password_strength.py darkweb2017-top100.txt
+Passwords black list is loaded
+Input password:
+Password strength is: 1
 
 ```
 

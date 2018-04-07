@@ -1,5 +1,8 @@
 import re
 import os
+import string
+import getpass
+import sys
 
 
 def load_blacklist(filepath):
@@ -11,13 +14,17 @@ def load_blacklist(filepath):
 
 def check_password_length(password):
     password_strength = 0
-    if len(password) > 4:
+    small_length = 4
+    normal_length = 6
+    good_length = 10
+    great_length = 12
+    if len(password) > small_length:
         password_strength += 1
-    if len(password) > 6:
+    if len(password) > normal_length:
         password_strength += 1
-    if len(password) > 10:
+    if len(password) > good_length:
         password_strength += 1
-    if len(password) > 12:
+    if len(password) > great_length:
         password_strength += 1
     return password_strength
 
@@ -27,6 +34,7 @@ def check_char_types(password):
     flag_uppercase = False
     flag_lowercase = False
     flag_digit = False
+    symbols_pattern = '[{}]'.format(string.punctuation)
     if re.search('[0-9]', password):
         flag_digit = True
         password_strength += 1
@@ -36,16 +44,15 @@ def check_char_types(password):
     if re.search('[a-z]', password):
         flag_lowercase = True
         password_strength += 1
-    if re.search('[$#@]', password):
+    if re.search(symbols_pattern, password):
         password_strength += 1
-    if flag_digit and flag_lowercase and flag_uppercase:
+    if all([flag_digit, flag_lowercase, flag_uppercase]):
         password_strength += 1
     return password_strength
 
 
-def get_password_strength(password, filepath_to_blacklist='passwords.txt'):
+def get_password_strength(password, password_blacklist=[]):
     password_strength = 0
-    password_blacklist = load_blacklist(filepath_to_blacklist)
     if password in password_blacklist:
         return 1
     if not password:
@@ -58,7 +65,17 @@ def get_password_strength(password, filepath_to_blacklist='passwords.txt'):
 
 
 if __name__ == '__main__':
-    password_for_test = input('Input password: ')
+    filepath = ''
+    if len(sys.argv) > 1:
+        filepath = sys.argv[1]
+    blacklist = load_blacklist(filepath)
+
+    if blacklist:
+        print('Passwords black list is loaded')
+
+    password_for_test = str(
+        getpass.getpass(prompt='Input password: ', stream=None))
+
     print(
         'Password strength is:',
-        get_password_strength(password_for_test))
+        get_password_strength(password_for_test, blacklist))
