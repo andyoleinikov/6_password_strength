@@ -74,8 +74,7 @@ if __name__ == '__main__':
     if blacklist:
         print('Passwords black list is loaded')
 
-    password_for_test = str(
-        getpass.getpass(prompt='Input password: ', stream=None))
+    password_for_test = getpass.getpass(prompt='Input password: ', stream=None)
 
     print(
         'Password strength is:',
