@@ -9,7 +9,7 @@ def load_blacklist(filepath):
     if os.path.exists(filepath):
         with open(filepath, 'r', encoding='utf-8') as text_file:
             return text_file.read().split('\n')
-    return []
+    return None
 
 
 def check_password_length(password):
@@ -51,8 +51,9 @@ def check_char_types(password):
     return password_strength
 
 
-def get_password_strength(password, password_blacklist=[]):
+def get_password_strength(password, password_blacklist=None):
     password_strength = 0
+    password_blacklist = password_blacklist or []
     if password in password_blacklist:
         return 1
     if not password:
